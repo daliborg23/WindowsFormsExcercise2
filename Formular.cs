@@ -27,7 +27,6 @@ namespace WindowsFormsExcercise2 {
         public string varianta = "";
         public int soucetCheckboxu;
         public Formular() {
-            //this.progressBar1.Maximum = cas;
             InitializeComponent();
         }
         public void Label1Zmena() {
@@ -40,7 +39,7 @@ namespace WindowsFormsExcercise2 {
                 label2.Text = "Soucin: " + (numericUpDown1.Value * numericUpDown2.Value).ToString();
             }
         }
-        private void timer1_Tick(object sender, EventArgs e) {
+        private void timer1_Tick(object sender, EventArgs e) { 
             progressBar1.Maximum = cas;
             if (progressBar1.Value != progressBar1.Maximum) {
                 progressBar1.Value++;
@@ -50,9 +49,9 @@ namespace WindowsFormsExcercise2 {
                 ////timer1.Stop();
                 odpocet = 0.0;
             }
-            ////label9.Text = progressBar1.Value.ToString();            
             toolStripStatusLabel1.Text = "Aktualni cas: " + DateTime.Now.ToString();
             label3.Text = String.Format(odpocet % 1 == 0 ? "{0:0.0}" : "{0:0.0}", odpocet) + " sekund";
+            if (odpocet == 0) { label3.Text = "Konec\nSoubor -> Novy\npro Reset."; }
         }
         private void novyToolStripMenuItem_Click(object sender, EventArgs e) {
             progressBar1.Value = 0;
@@ -74,7 +73,6 @@ namespace WindowsFormsExcercise2 {
             saveFileDialog1.FileName = cesta;
             DialogResult dr = saveFileDialog1.ShowDialog();
             if (dr == DialogResult.OK) {
-                // Code to write the stream goes here.
                 StreamWriter writing = new StreamWriter(saveFileDialog1.FileName);
                 writing.Write(textBox1.Text);
                 writing.Close();
@@ -213,7 +211,16 @@ namespace WindowsFormsExcercise2 {
 
         private void nastaveniToolStripMenuItem_Click(object sender, EventArgs e) {
             nastaveniFormular nastaveni = new nastaveniFormular();
-            nastaveni.ShowDialog();
+            nastaveni.nastaveniOdpocet = (int)odpocetOriginal;
+            //nastaveni.obrazek;
+            DialogResult result = new DialogResult();
+            result = nastaveni.ShowDialog();
+            pictureBox1.ImageLocation = nastaveni.obrazekCesta;
+            odpocetOriginal = Convert.ToDouble(nastaveni.nastaveniOdpocet);
+            odpocet = odpocetOriginal;
+            cas = (int)odpocet * 10;
+            progressBar1.Maximum = cas;
+            progressBar1.Value = cas;
         }
     }
 }
